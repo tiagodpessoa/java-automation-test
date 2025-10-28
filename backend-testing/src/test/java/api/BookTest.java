@@ -83,7 +83,7 @@ public class BookTest extends BaseTest {
         .when()
             .delete("/Books/{id}")
         .then()
-            .statusCode(anyOf(is(200), is(400), is(404)));
+            .statusCode(404);
     }
 
     @Test
