@@ -11,24 +11,25 @@ import static org.hamcrest.Matchers.*;
 public class BookTest extends BaseTest {
 
     private static int createdBookId;
+    private static Map<String, Object> createdBookData;
 
     @Test
     @Order(1)
     @DisplayName("Criar um novo book com POST")
     void createBookTest() {
-        Map<String, Object> book = BookFixture.createValidBookData();
+        createdBookData = BookFixture.createValidBookData();
 
         createdBookId = given()
                 .contentType(ContentType.JSON)
-                .body(book)
+                .body(createdBookData)
             .when()
                 .post("/Books")
             .then()
                 .statusCode(200)
-                .body("title", equalTo(book.get("title")))
-                .body("description", equalTo(book.get("description")))
-                .body("pageCount", equalTo(book.get("pageCount")))
-                .body("publishDate", startsWith(book.get("publishDate").toString()))
+                .body("title", equalTo(createdBookData.get("title")))
+                .body("description", equalTo(createdBookData.get("description")))
+                .body("pageCount", equalTo(createdBookData.get("pageCount")))
+                .body("publishDate", startsWith(createdBookData.get("publishDate").toString()))
                 .extract()
                 .path("id");
     }
@@ -37,19 +38,17 @@ public class BookTest extends BaseTest {
     @Order(2)
     @DisplayName("Recuperar book criado com GET e validar todos os campos")
     void getBookTest() {
-        Map<String, Object> book = BookFixture.createValidBookData();
-
-        given()
-            .pathParam("id", createdBookId)
-        .when()
-            .get("/Books/{id}")
-        .then()
-            .statusCode(200)
-            .body("id", equalTo(createdBookId))
-            .body("title", equalTo(book.get("title")))
-            .body("description", equalTo(book.get("description")))
-            .body("pageCount", equalTo(book.get("pageCount")))
-            .body("publishDate", equalTo(book.get("publishDate")));
+    given()
+        .pathParam("id", createdBookId)
+    .when()
+        .get("/Books/{id}")
+    .then()
+        .statusCode(200)
+        .body("id", equalTo(createdBookId))
+        .body("title", equalTo(createdBookData.get("title")))
+        .body("description", equalTo(createdBookData.get("description")))
+        .body("pageCount", equalTo(createdBookData.get("pageCount")))
+        .body("publishDate", equalTo(createdBookData.get("publishDate")));
     }
 
     @Test
