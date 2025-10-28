@@ -1,0 +1,18 @@
+# IDE
+*.iml
+.idea/
+*.log
+*.class
+
+# Maven
+target/
+
+# Logs
+*.log
+
+# Sistema
+.DS_Store
+Thumbs.db
+
+# Selenium WebDriver
+drivers/
